@@ -3,6 +3,7 @@
     "files.associations": {
         "stdlib.h": "c",
         "abb.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "typeinfo": "c"
     }
 }
