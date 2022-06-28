@@ -65,8 +65,8 @@ int add_abb(int id, char *nome_aluno, int matricula_aluno, char *descricao_aluno
     }
     else
     {
-
         VERTICE *novo = malloc(sizeof(VERTICE));
+        printf("TESTANDOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         novo->id = id;
         novo->nome_aluno = nome_aluno;
         novo->matricula_aluno = matricula_aluno;
@@ -95,6 +95,11 @@ int add_abb(int id, char *nome_aluno, int matricula_aluno, char *descricao_aluno
 
 void in_ordem(VERTICE *aux)
 {
+    if(aux == NULL)
+    {
+        printf("\nArvore vazia");
+    }
+
     printf("%d | %s | %d | %s\n", aux->id, aux->nome_aluno, aux->matricula_aluno, aux->descricao_aluno);
     if (aux->esq != NULL)
     {

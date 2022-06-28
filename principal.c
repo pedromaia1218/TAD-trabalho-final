@@ -5,15 +5,6 @@
 #include "fila.h"
 #include "lista_de_usuarios.h"
 
-void add_aluno(char *nome_aluno, int matricula_aluno, char *descricao_aluno)
-{
-    int result = 0;
-    while (result == 0)
-    {
-        result = add_abb(rand(), nome_aluno, matricula_aluno, descricao_aluno);
-    }
-}
-
 int verificar(char *cpf, char *senha)
 {
     NO_LISTA buscado = buscar_lista(cpf);
@@ -23,7 +14,7 @@ int verificar(char *cpf, char *senha)
     }
     else
     {
-        return 0;
+        return 2;
     }
 }
 
@@ -47,30 +38,35 @@ int main()
 
         if (resp == 1)
         {
-            printf("\nDigite o nome do aluno:\n");
-            char *nome = malloc(sizeof(char));
+            printf("Digite o nome do aluno: ");
+            char * nome = malloc(sizeof(char));
             scanf(" %[^\n]s", nome);
 
-            printf("\nDigite a matricula do aluno:\n");
+            printf("Digite a matricula do aluno: ");
             int matricula;
             scanf("%d", &matricula);
 
-            printf("\nDigite a descricao do livro (maximo 500 caracteres):\n");
-            char *descricao = malloc(sizeof(char));
+            printf("Digite a descricao do livro (maximo 500 caracteres): ");
+            char * descricao = malloc(sizeof(char));
             scanf(" %[^\n]s", descricao);
 
-            add_aluno(nome, matricula, descricao);
+            int result = 0;
+            while (result == 0)
+            {
+                result = add_abb(rand(), nome, matricula, descricao);
+            }
+            
         }
         else if (resp == 2)
         {
             imprimir_lista();
             in_ordem(raiz);
 
-            printf(" Digite seu cpf:\n");
+            printf("Digite seu cpf:");
             char *cpf = malloc(sizeof(char));
             scanf(" %[^\n]s", cpf);
 
-            printf(" Digite sua senha:\n");
+            printf("Digite sua senha:");
             char *senha = malloc(sizeof(char));
             scanf(" %[^\n]s", senha);
 
