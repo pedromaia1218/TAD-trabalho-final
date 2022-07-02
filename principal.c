@@ -8,7 +8,7 @@
 NO_LISTA *consultarSecretario(char *cpf, char *senha)
 {
     NO_LISTA *buscado = buscar_lista(cpf);
-    if (buscado != NULL && strcmp(senha, buscado->senha) == 0)
+    if (buscado != NULL && strcmp(senha, buscado->senha) == 0 && buscado->tipo == 's')
     {
         return buscado;
     }
@@ -69,8 +69,8 @@ int main()
             char *senha = malloc(sizeof(char));
             scanf(" %[^\n]s", senha);
 
-            NO_LISTA *retorno = consultarSecretario(cpf, senha);
-            if (retorno != NULL)
+            NO_LISTA *secretario = consultarSecretario(cpf, senha);
+            if (secretario != NULL)
             {
                 printf("\nDigite o ID da solicitacao: ");
                 int id_requerido;
@@ -85,9 +85,20 @@ int main()
 
                 remover_abb(id_requerido);
                 printf("\n\n%d %s %d %s\n\n", copia->id, copia->nome_aluno, copia->matricula_aluno, copia->descricao_aluno);
-                in_ordem(raiz);
-                // 4 - setar novos dados (faltando)
-                // 5 - add_fila(....);
+
+                printf("Digite o campus do livro: ");
+                char campus_livro[500];
+                scanf_s(" %[^\n]s", campus_livro, 500);
+
+                printf("Digite o campus do aluno: ");
+                char campus_aluno[500];
+                scanf_s(" %[^\n]s", campus_aluno, 500);
+
+                printf("Digite a PRIORIDADE: ");
+                int prioridade;
+                scanf("%d", &prioridade);
+                
+                add_fila(copia->id, copia->nome_aluno, copia->matricula_aluno, copia->descricao_aluno, campus_livro, campus_aluno, secretario->nome, prioridade);
             }
             else
             {
@@ -96,6 +107,8 @@ int main()
         }
         else if (resp == 3)
         {
+            in_ordem(raiz);
+            imprimir_fila();
             // 2 - verificar o usuario
             // int retorno = verificar(cpf, senha);
             // if (retorno == 1)

@@ -60,7 +60,7 @@ void add_fila(int id, char nome_aluno[], int matricula_aluno, char descricao_alu
     }
 }
 
-void imprimir()
+void imprimir_fila()
 {
     NO *aux = inicio;
     for (int i = 0; i < tam; i++)
