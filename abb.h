@@ -74,7 +74,7 @@ int add_abb(int id, char nome_aluno[], int matricula_aluno, char descricao_aluno
         novo->dir = NULL;
 
         if (aux == NULL)
-        { // arvore esta vazia
+        {
             raiz = novo;
         }
         else
@@ -134,7 +134,6 @@ VERTICE *remover(int id, VERTICE *aux)
 
     else
     {
-        // node with only one child or no child
         if (aux->esq == NULL)
         {
             VERTICE *temp = aux;
@@ -151,18 +150,13 @@ VERTICE *remover(int id, VERTICE *aux)
         }
         else
         {
-
-            // node with two children: Get the inorder successor
-            // (smallest in the dir subtree)
             VERTICE *temp = menorDosMaiores(aux->dir);
 
-            // Copy the inorder successor's content to this node
             aux->id = temp->id;
             strcpy(aux->nome_aluno, temp->nome_aluno);
             aux->matricula_aluno = temp->matricula_aluno;
             strcpy(aux->descricao_aluno, temp->descricao_aluno);
 
-            // Delete the inorder successor
             aux->dir = remover(temp->id, aux->dir);
         }
     }

@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct pedido
 {
-
-    int id; // id
+    int id;
     char nome_aluno[500];
     int matricula_aluno;
     char descricao_aluno[500];
@@ -12,45 +12,51 @@ typedef struct pedido
     char campus_aluno[500];
     char nome_secretario[500];
     int prioridade;
-} PEDIDO;
-
-typedef struct No
-{
-
-    PEDIDO *p;
-
-    // mecanismo p/ unir nos!
-    struct No *prox;
+    struct pedido *prox;
 } NO;
 
 NO *inicio = NULL;
 NO *fim = NULL;
 int tam = 0;
 
-void add_fila(int id, char nome_aluno[], int prioridade)
+void add_fila(int id, char nome_aluno[], int matricula_aluno, char descricao_aluno[], char campus_livro[], char campus_aluno[], char nome_secretario[], int prioridade)
 {
-
-    PEDIDO *p = malloc(sizeof(PEDIDO));
-    // p->id = id;
-    // p->nome_aluno = nome_aluno;
-    // p->prioridade = prioridade;
-
     NO *novo = malloc(sizeof(NO));
-    novo->p = p;
+    novo->id = id;
+    strcpy(novo->nome_aluno, nome_aluno);
+    novo->matricula_aluno = matricula_aluno;
+    strcpy(novo->descricao_aluno, descricao_aluno);
+    strcpy(novo->campus_livro, campus_livro);
+    strcpy(novo->campus_aluno, campus_aluno);
+    strcpy(novo->nome_secretario, nome_secretario);
+    novo->prioridade = prioridade;
     novo->prox = NULL;
 
     if (inicio == NULL)
-    { // fila vazia
+    {
         inicio = novo;
         fim = novo;
         tam++;
     }
     else
-    { // adiciona de acordo com a prioridade! :D
-        // modificar!
-        fim->prox = novo;
-        fim = novo;
-        tam++;
+    {
+        NO *aux = inicio;
+        if (inicio->prioridade > prioridade)
+        {
+            novo->prox = inicio;
+            inicio = novo;
+            tam++;
+        }
+        else
+        {
+            while (aux->prox != NULL && aux->prox->prioridade < prioridade)
+            {
+                aux = aux->prox;
+            }
+            novo->prox = aux->prox;
+            aux->prox = novo;
+            tam++;
+        }
     }
 }
 
@@ -59,22 +65,26 @@ void imprimir()
     NO *aux = inicio;
     for (int i = 0; i < tam; i++)
     {
-        printf("id: %d\n", aux->p->id);
+        printf("\n%d | %s | %d | %s | %s | %s | %s | %d\n", aux->id, aux->nome_aluno, aux->matricula_aluno, aux->descricao_aluno, aux->campus_livro, aux->campus_aluno, aux->nome_secretario, aux->prioridade);
         aux = aux->prox;
     }
 }
 
-PEDIDO remover_fila()
+NO remover_fila()
 {
-    PEDIDO pedido;
-    // remover!
+    NO pedido;
     if (inicio != NULL)
-    { // remover do antigo inicio da lista!
-
+    {
         NO *lixo = inicio;
         inicio = inicio->prox;
-        pedido.id = lixo->p->id;
-        //...
+        pedido.id = lixo->id;
+        strcpy(pedido.nome_aluno, lixo->nome_aluno);
+        pedido.matricula_aluno = lixo->matricula_aluno;
+        strcpy(pedido.descricao_aluno, lixo->descricao_aluno);
+        strcpy(pedido.campus_livro, lixo->campus_livro);
+        strcpy(pedido.campus_aluno, lixo->campus_aluno);
+        strcpy(pedido.nome_secretario, lixo->nome_secretario);
+        pedido.prioridade = lixo->prioridade;
         free(lixo);
         tam--;
         if (tam == 1)
