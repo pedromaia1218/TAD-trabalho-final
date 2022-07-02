@@ -22,7 +22,9 @@ int main()
 {
     srand(time(NULL));
 
-    add_lista("Tati", "497504", "151515", 's', 0);
+    add_lista("Tatiane", "497504", "151515", 's', 0);
+    add_lista("Pablo", "555555", "121212", 's', 0);
+    add_lista("Alexandre", "888999", "canguru", 's', 0);
     add_lista("Sergio", "521443", "656565", 't', 1);
 
     printf("\nSISTEMA DE ENCOMENDA DE LIVRO\n");

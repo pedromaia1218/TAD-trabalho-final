@@ -41,7 +41,7 @@ void add_fila(int id, char nome_aluno[], int matricula_aluno, char descricao_alu
     else
     {
         NO *aux = inicio;
-        if (inicio->prioridade > prioridade)
+        if (inicio->prioridade < prioridade)
         {
             novo->prox = inicio;
             inicio = novo;
@@ -49,7 +49,7 @@ void add_fila(int id, char nome_aluno[], int matricula_aluno, char descricao_alu
         }
         else
         {
-            while (aux->prox != NULL && aux->prox->prioridade < prioridade)
+            while (aux->prox != NULL && aux->prox->prioridade > prioridade)
             {
                 aux = aux->prox;
             }
