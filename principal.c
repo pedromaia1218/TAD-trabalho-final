@@ -18,6 +18,19 @@ NO_LISTA *consultarSecretario(char *cpf, char *senha)
     }
 }
 
+NO_LISTA *consultarTransportador(char *cpf, char *senha)
+{
+    NO_LISTA *buscado = buscar_lista(cpf);
+    if (buscado != NULL && strcmp(senha, buscado->senha) == 0 && buscado->tipo == 't')
+    {
+        return buscado;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
 int main()
 {
     srand(time(NULL));
@@ -61,7 +74,14 @@ int main()
         else if (resp == 2)
         {
             imprimir_lista();
-            in_ordem(raiz);
+            if (raiz != NULL)
+            {
+                in_ordem(raiz);
+            }
+            else
+            {
+                printf("\nArvore VAZIA!\n");
+            }
 
             printf("Digite seu cpf:");
             char *cpf = malloc(sizeof(char));
@@ -99,7 +119,7 @@ int main()
                 printf("Digite a PRIORIDADE: ");
                 int prioridade;
                 scanf("%d", &prioridade);
-                
+
                 add_fila(copia->id, copia->nome_aluno, copia->matricula_aluno, copia->descricao_aluno, campus_livro, campus_aluno, secretario->nome, prioridade);
             }
             else
@@ -109,14 +129,32 @@ int main()
         }
         else if (resp == 3)
         {
-            in_ordem(raiz);
-            imprimir_fila();
-            // 2 - verificar o usuario
-            // int retorno = verificar(cpf, senha);
-            // if (retorno == 1)
-            // {
-            //     // remover da fila de prioridade
-            // }
+            if (inicio != NULL)
+            {
+                imprimir_fila();
+            }else{
+                printf("\nFila VAZIA!\n");
+            }
+
+            printf("Digite seu cpf:");
+            char *cpf = malloc(sizeof(char));
+            scanf(" %[^\n]s", cpf);
+
+            printf("Digite sua senha:");
+            char *senha = malloc(sizeof(char));
+            scanf(" %[^\n]s", senha);
+
+            NO_LISTA *transportador = consultarTransportador(cpf, senha);
+            if (transportador != NULL)
+            {
+                remover_fila();
+                printf("\nRemovido com Sucesso! Nova fila abaixo\n");
+                imprimir_fila();
+            }
+            else
+            {
+                printf("\nLogin invalido!\n\n");
+            }
         }
     }
     return 0;
