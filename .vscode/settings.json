@@ -1,3 +1,6 @@
 {
-    "C_Cpp.errorSquiggles": "Disabled"
+    "files.associations": {
+        "lista_de_usuarios.h": "c",
+        "string.h": "c"
+    }
 }

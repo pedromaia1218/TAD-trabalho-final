@@ -1,84 +1,170 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-typedef struct Vertice{
-   
-    //Dados iniciais da encomenda de um livro
-    int id; //identificador
-    char * nome_aluno;
-    int matricula;
-    char * descricao;
-    
-    //mecanismo p/ unir nos!
-    struct Vertice * esq;
-    struct Vertice * dir;
-}VERTICE;
+typedef struct Vertice
+{
+    // Dados iniciais da encomenda de um livro
+    int id; // identificador
+    char nome_aluno[500];
+    int matricula_aluno;
+    char descricao_aluno[500];
 
-VERTICE * raiz = NULL;
+    struct Vertice *esq;
+    struct Vertice *dir;
+} VERTICE;
 
-VERTICE* buscar(int id, VERTICE *aux){
-    
-    if(aux != NULL){
-        if(aux->id == id){
+VERTICE *raiz = NULL;
+
+VERTICE *buscar(int id, VERTICE *aux)
+{
+
+    if (aux != NULL)
+    {
+        if (aux->id == id)
+        {
             return aux;
-        }else if(id < aux->id){
-            if(aux->esq != NULL){
+        }
+        else if (id < aux->id)
+        {
+            if (aux->esq != NULL)
+            {
                 return buscar(id, aux->esq);
-            }else{
-                return aux;
             }
-        }else if(id > aux->id){
-            if(aux->dir != NULL){
-                return buscar(id, aux->dir);
-            }else{
+            else
+            {
                 return aux;
             }
         }
-    }else{
+        else if (id > aux->id)
+        {
+            if (aux->dir != NULL)
+            {
+                return buscar(id, aux->dir);
+            }
+            else
+            {
+                return aux;
+            }
+        }
+    }
+    else
+    {
         return NULL;
     }
 }
 
+int add_abb(int id, char nome_aluno[], int matricula_aluno, char descricao_aluno[])
+{
+    VERTICE *aux = buscar(id, raiz);
 
-void add_abb(int id, char *nome_aluno, int matricula, char *descricao){
-
-    VERTICE* aux = buscar(id, raiz);
-    
-    if(aux != NULL && aux->id == id){
+    if (aux != NULL && aux->id == id)
+    {
         printf("Insercao invalida!\n");
-    }else{
-        
-        VERTICE * novo = malloc(sizeof(VERTICE));
+        return 0;
+    }
+    else
+    {
+        VERTICE *novo = malloc(sizeof(VERTICE));
         novo->id = id;
-        novo->nome_aluno = nome_aluno;
-        novo->matricula = matricula;
-        novo->descricao = descricao;
+        strcpy(novo->nome_aluno, nome_aluno);
+        novo->matricula_aluno = matricula_aluno;
+        strcpy(novo->descricao_aluno, descricao_aluno);
         novo->esq = NULL;
         novo->dir = NULL;
-        
-        if(aux == NULL){//arvore esta vazia
+
+        if (aux == NULL)
+        {
             raiz = novo;
-        }else{
-            if(id < aux->id){
+        }
+        else
+        {
+            if (id < aux->id)
+            {
                 aux->esq = novo;
-            }else{
+            }
+            else
+            {
                 aux->dir = novo;
             }
         }
+        return 1;
     }
 }
 
+void in_ordem(VERTICE *aux)
+{
+    if (aux == NULL)
+    {
+        printf("\nArvore vazia");
+    }
 
-void in_ordem(VERTICE *aux){
-    
-    if(aux->esq != NULL){
+    printf("%d | %s | %d | %s\n", aux->id, aux->nome_aluno, aux->matricula_aluno, aux->descricao_aluno);
+    if (aux->esq != NULL)
+    {
         in_ordem(aux->esq);
     }
-    printf("%d\n", aux->id);
-    printf("%s\n", aux->nome_aluno);
-    printf("%d\n", aux->matricula);
-    printf("%s\n", aux->descricao);
-    if(aux->dir != NULL){
+
+    if (aux->dir != NULL)
+    {
         in_ordem(aux->dir);
+    }
+}
+
+VERTICE *menorDosMaiores(VERTICE *aux)
+{
+    VERTICE *atual = aux;
+
+    while (atual && atual->esq != NULL)
+        atual = atual->esq;
+
+    return atual;
+}
+
+VERTICE *remover(int id, VERTICE *aux)
+{
+    if (aux == NULL)
+        return aux;
+
+    if (id < aux->id)
+        aux->esq = remover(id, aux->esq);
+
+    else if (id > aux->id)
+        aux->dir = remover(id, aux->dir);
+
+    else
+    {
+        if (aux->esq == NULL)
+        {
+            VERTICE *temp = aux;
+            aux = aux->dir;
+            free(temp);
+            return aux;
         }
+        else if (aux->dir == NULL)
+        {
+            VERTICE *temp = aux;
+            aux = aux->esq;
+            free(temp);
+            return aux;
+        }
+        else
+        {
+            VERTICE *temp = menorDosMaiores(aux->dir);
+
+            aux->id = temp->id;
+            strcpy(aux->nome_aluno, temp->nome_aluno);
+            aux->matricula_aluno = temp->matricula_aluno;
+            strcpy(aux->descricao_aluno, temp->descricao_aluno);
+
+            aux->dir = remover(temp->id, aux->dir);
+        }
+    }
+    return aux;
+}
+
+VERTICE *remover_abb(int id)
+{
+    raiz = remover(id, raiz);
+    return raiz;
 }
