@@ -5,16 +5,16 @@
 #include "fila.h"
 #include "lista_de_usuarios.h"
 
-int verificar(char *cpf, char *senha)
+NO_LISTA *consultarSecretario(char *cpf, char *senha)
 {
-    NO_LISTA buscado = buscar_lista(cpf);
-    if (cpf == buscado.cpf && senha == buscado.senha)
+    NO_LISTA *buscado = buscar_lista(cpf);
+    if (buscado != NULL && strcmp(senha, buscado->senha) == 0)
     {
-        return 1;
+        return buscado;
     }
     else
     {
-        return 2;
+        return NULL;
     }
 }
 
@@ -39,23 +39,22 @@ int main()
         if (resp == 1)
         {
             printf("Digite o nome do aluno: ");
-            char * nome = malloc(sizeof(char));
-            scanf(" %[^\n]s", nome);
+            char nome[500];
+            scanf_s(" %[^\n]s", nome, 500);
 
             printf("Digite a matricula do aluno: ");
             int matricula;
             scanf("%d", &matricula);
 
             printf("Digite a descricao do livro (maximo 500 caracteres): ");
-            char * descricao = malloc(sizeof(char));
-            scanf(" %[^\n]s", descricao);
+            char descricao[500];
+            scanf_s(" %[^\n]s", descricao, 500);
 
             int result = 0;
             while (result == 0)
             {
                 result = add_abb(rand(), nome, matricula, descricao);
             }
-            
         }
         else if (resp == 2)
         {
@@ -70,17 +69,29 @@ int main()
             char *senha = malloc(sizeof(char));
             scanf(" %[^\n]s", senha);
 
-            int retorno = verificar(cpf, senha);
-            if (retorno == 1)
+            NO_LISTA *retorno = consultarSecretario(cpf, senha);
+            if (retorno != NULL)
             {
-                printf("deu certo!");
-                // 3 - chama a funcao remover_abb por id (CADE ESSA FUNCAO?)
+                printf("\nDigite o ID da solicitacao: ");
+                int id_requerido;
+                scanf("%d", &id_requerido);
+
+                VERTICE *copia = malloc(sizeof(VERTICE));
+                VERTICE *buscado = buscar(id_requerido, raiz);
+                copia->id = buscado->id;
+                strcpy(copia->nome_aluno, buscado->nome_aluno);
+                copia->matricula_aluno = buscado->matricula_aluno;
+                strcpy(copia->descricao_aluno, buscado->descricao_aluno);
+
+                remover_abb(id_requerido);
+                printf("\n\n%d %s %d %s\n\n", copia->id, copia->nome_aluno, copia->matricula_aluno, copia->descricao_aluno);
+                in_ordem(raiz);
                 // 4 - setar novos dados (faltando)
                 // 5 - add_fila(....);
             }
             else
             {
-                printf("deu errado");
+                printf("\nLogin invalido!\n\n");
             }
         }
         else if (resp == 3)

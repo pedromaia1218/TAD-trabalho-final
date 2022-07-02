@@ -5,12 +5,12 @@ typedef struct pedido
 {
 
     int id; // id
-    char *nome_aluno;
-    // int matricula_aluno;
-    // char *descricao_aluno;
-    // char *campus_livro;
-    // char *campus_aluno;
-    // char *nome_secretario;
+    char nome_aluno[500];
+    int matricula_aluno;
+    char descricao_aluno[500];
+    char campus_livro[500];
+    char campus_aluno[500];
+    char nome_secretario[500];
     int prioridade;
 } PEDIDO;
 
@@ -27,13 +27,13 @@ NO *inicio = NULL;
 NO *fim = NULL;
 int tam = 0;
 
-void add_fila(int id, char *nome_aluno, int prioridade)
+void add_fila(int id, char nome_aluno[], int prioridade)
 {
 
     PEDIDO *p = malloc(sizeof(PEDIDO));
-    p->id = id;
-    p->nome_aluno = nome_aluno;
-    p->prioridade = prioridade;
+    // p->id = id;
+    // p->nome_aluno = nome_aluno;
+    // p->prioridade = prioridade;
 
     NO *novo = malloc(sizeof(NO));
     novo->p = p;

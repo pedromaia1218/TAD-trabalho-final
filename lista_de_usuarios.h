@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct no_lista
 {
@@ -74,30 +75,20 @@ void imprimir_lista()
     }
 }
 
-NO_LISTA buscar_lista(char *cpf)
+NO_LISTA *buscar_lista(char *cpf)
 {
-    NO_LISTA usuario;
     NO_LISTA *aux = inicio_lista;
-    if (aux->cpf == cpf)
+    if (aux == NULL)
     {
-        usuario.nome = aux->nome;
-        usuario.cpf = aux->cpf;
-        usuario.senha = aux->senha;
-        usuario.tipo = aux->tipo;
-
-        return usuario;
+        return NULL;
     }
-    else
+    while (strcmp(cpf, aux->cpf) != 0)
     {
-        while (cpf != aux->prox->cpf)
+        if(aux->prox == NULL)
         {
-            aux = aux->prox;
+            return NULL;
         }
-        usuario.nome = aux->prox->nome;
-        usuario.cpf = aux->prox->cpf;
-        usuario.senha = aux->prox->senha;
-        usuario.tipo = aux->prox->tipo;
-
-        return usuario;
+        aux = aux->prox;
     }
+    return aux;
 }
