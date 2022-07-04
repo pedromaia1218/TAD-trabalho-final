@@ -4,8 +4,7 @@
 
 typedef struct Vertice
 {
-    // Dados iniciais da encomenda de um livro
-    int id; // identificador
+    int id;
     char nome_aluno[500];
     int matricula_aluno;
     char descricao_aluno[500];
